@@ -486,6 +486,21 @@ class Generator {
         // If the col's content is too long, split it to the next row
         int realCharactersNb = encodedToPrint.length;
         if (realCharactersNb > maxCharactersNb) {
+          try {
+            while (String.fromCharCodes(
+                        encodedToPrint.sublist(0, maxCharactersNb))[
+                    String.fromCharCodes(
+                                encodedToPrint.sublist(0, maxCharactersNb))
+                            .length -
+                        1] !=
+                " ") {
+              maxCharactersNb--;
+              if (maxCharactersNb == 0) {
+                maxCharactersNb = ((toPos - fromPos) / charWidth).floor();
+                break;
+              }
+            }
+          } catch (e) {}
           // Print max possible and split to the next row
           Uint8List encodedToPrintNextRow =
               encodedToPrint.sublist(maxCharactersNb);
